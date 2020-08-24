@@ -29,7 +29,7 @@ namespace Enums
             BedrijvenList.Add(bedrijf2);
             BedrijvenList.Add(bedrijf3);
 
-            bedrijf1.Werknemers.Add(new Werknemer("Geert",new Salaris(contract : "Week")));
+            bedrijf1.Werknemers.Add(new Programmeur("Geert",new Salaris(contract : "Week")));
             bedrijf1.Werknemers.Add(new Werknemer("Frank",new Salaris(bruto : 3200.00)));
             bedrijf1.Werknemers.Add(new Werknemer("Mark",new Salaris(contract: "Week"), country: "Nederland"));
 
@@ -44,7 +44,6 @@ namespace Enums
 
             cbBedrijven.DataSource = BedrijvenList;
         }
-
         private void cbNamen_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbNamen.SelectedIndex < 0)
@@ -56,14 +55,12 @@ namespace Enums
             lblNet.Text = "Netto: €" + Math.Round(BedrijvenList[cbBedrijven.SelectedIndex].Werknemers[cbNamen.SelectedIndex].Salary.BerekenNetto(),2) + " " +
                            BedrijvenList[cbBedrijven.SelectedIndex].Werknemers[cbNamen.SelectedIndex].Salary.Contract.ToLower() + "elijks";
         }
-
         private void cbBedrijven_SelectedIndexChanged(object sender, EventArgs e)
         {
             cbNamen.DataSource = null;
             cbNamen.DataSource = BedrijvenList[cbBedrijven.SelectedIndex].Werknemers;
             lblBtw.Text = "BTW-nr.: " + BedrijvenList[cbBedrijven.SelectedIndex].BtwNummer;
         }
-
         private void btnRemove_Click(object sender, EventArgs e)
         {
             BedrijvenList[cbBedrijven.SelectedIndex].VerwijderWerknemer(cbNamen.SelectedItem as Werknemer);
@@ -72,7 +69,6 @@ namespace Enums
             cbNamen.DataSource = BedrijvenList[cbBedrijven.SelectedIndex].Werknemers;
 
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Form2 form2 = new Form2();
@@ -80,11 +76,11 @@ namespace Enums
 
             if (form2.ShowDialog() == DialogResult.OK)
             {
-
-                BedrijvenList[cbBedrijven.SelectedIndex].VoegWerknemerToe(new Werknemer(form2.txtName.Text,new Salaris((double)form2.numSalary.Value),form2.txtCountry.Text));
+                Bedrijf selectedBedrijf = (Bedrijf)cbBedrijven.SelectedItem;
+                selectedBedrijf.VoegWerknemerToe(new Werknemer(form2.txtName.Text,new Salaris((double)form2.numSalary.Value),form2.txtCountry.Text));
 
                 cbNamen.DataSource = null;
-                cbNamen.DataSource = BedrijvenList[cbBedrijven.SelectedIndex].Werknemers;
+                cbNamen.DataSource = selectedBedrijf.Werknemers;
             }
 
         }
